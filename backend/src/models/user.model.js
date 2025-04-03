@@ -19,17 +19,24 @@ const UserSchema = new mongoose.Schema({
     default: Date.now
   },
   preferences: {
+    // Wetter-Einstellungen
     weatherLocation: String,
+    weatherLocationLat: Number,
+    weatherLocationLon: Number,
+    
+    // Banking-Einstellungen
     bankingSettings: {
       refreshRate: {
         type: Number,
-        default: 60 // minutes
+        default: 60 // Minuten
       }
     },
+    
+    // SmartThings-Einstellungen
     smartThingsSettings: {
       refreshRate: {
         type: Number,
-        default: 30 // seconds
+        default: 30 // Sekunden
       }
     }
   }

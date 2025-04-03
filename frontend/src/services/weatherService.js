@@ -1,9 +1,9 @@
 import api from './api';
 
 /**
- * Get current weather data for specified location or user's default
- * @param {string} location Optional: Location to get weather for
- * @returns {Promise} Weather data
+ * Aktuelle Wetterdaten für angegebenen Standort oder Standardstandort des Benutzers abrufen
+ * @param {string} location Optional: Standort für den Wetterdaten abgerufen werden sollen
+ * @returns {Promise} Wetterdaten
  */
 export const getCurrentWeather = async (location = null) => {
   const params = location ? { location } : {};
@@ -12,10 +12,10 @@ export const getCurrentWeather = async (location = null) => {
 };
 
 /**
- * Get weather forecast for next few days
- * @param {string} location Optional: Location to get forecast for
- * @param {number} days Optional: Number of days for forecast (default: 5)
- * @returns {Promise} Weather forecast data
+ * Wettervorhersage für die nächsten Tage abrufen
+ * @param {string} location Optional: Standort für den die Vorhersage abgerufen werden soll
+ * @param {number} days Optional: Anzahl der Tage für die Vorhersage (Standard: 5)
+ * @returns {Promise} Wettervorhersagedaten
  */
 export const getWeatherForecast = async (location = null, days = 5) => {
   const params = { days };
@@ -26,11 +26,40 @@ export const getWeatherForecast = async (location = null, days = 5) => {
 };
 
 /**
- * Update user's default weather location
- * @param {string} location Location to set as default
- * @returns {Promise} Result of update operation
+ * Wetterwarnungen abrufen
+ * @param {string} location Optional: Standort für den Warnungen abgerufen werden sollen
+ * @returns {Promise} Wetterwarnungsdaten
  */
-export const updateDefaultLocation = async (location) => {
-  const response = await api.put('/weather/settings', { defaultLocation: location });
+export const getWeatherAlerts = async (location = null) => {
+  const params = location ? { location } : {};
+  const response = await api.get('/weather/alerts', { params });
+  return response.data;
+};
+
+/**
+ * Standorte nach Eingabe suchen
+ * @param {string} query Suchbegriff
+ * @returns {Promise} Liste gefundener Standorte
+ */
+export const searchLocations = async (query) => {
+  const response = await api.get('/weather/locations', { params: { query } });
+  return response.data;
+};
+
+/**
+ * Standardstandort des Benutzers aktualisieren
+ * @param {string} location Standort der als Standard gespeichert werden soll
+ * @param {number} lat Optional: Breitengrad des Standorts
+ * @param {number} lon Optional: Längengrad des Standorts
+ * @returns {Promise} Ergebnis der Aktualisierungsoperation
+ */
+export const updateDefaultLocation = async (location, lat = null, lon = null) => {
+  const data = { defaultLocation: location };
+  if (lat !== null && lon !== null) {
+    data.lat = lat;
+    data.lon = lon;
+  }
+  
+  const response = await api.put('/weather/settings', data);
   return response.data;
 };

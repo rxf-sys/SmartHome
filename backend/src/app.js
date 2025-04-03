@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth.routes');
 const weatherRoutes = require('./routes/weather.routes');
 const bankingRoutes = require('./routes/banking.routes');
 const smartThingsRoutes = require('./routes/smartThings.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
 
 // Initialize Express
 const app = express();
@@ -29,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/weather', weatherRoutes);
 app.use('/api/banking', bankingRoutes);
 app.use('/api/smartthings', smartThingsRoutes);
+app.use('/api/dashboard', dashboardRoutes); // Neue Dashboard-Route
 
 // Root route
 app.get('/', (req, res) => {

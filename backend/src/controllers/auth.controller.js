@@ -34,12 +34,24 @@ exports.register = async (req, res) => {
       }
     };
 
+    // Hier sollte der JWT_SECRET aus der Umgebungsvariable kommen
+    const jwtSecret = process.env.JWT_SECRET;
+    
+    // Prüfen, ob der Secret existiert
+    if (!jwtSecret) {
+      console.error('JWT_SECRET not defined in environment variables');
+      return res.status(500).json({ msg: 'Server configuration error' });
+    }
+
     jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      jwtSecret,
       { expiresIn: '1d' },
       (err, token) => {
-        if (err) throw err;
+        if (err) {
+          console.error('JWT signing error:', err.message);
+          throw err;
+        }
         res.json({ token });
       }
     );
